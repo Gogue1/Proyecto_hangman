@@ -1,29 +1,34 @@
 import java.util.Scanner;
 
 
-public class Inicio{
-    public static void main(String[] args) throws InterruptedException{
+public class Inicio {
+    public static void main(String[] args) throws InterruptedException {
         String Word = "jorge";
         String newWord;
+        String lowbar = new String(new char[Word.length()]).replace("\0", " _ ");
         int option = 0;
         boolean fullWord = false;
 
         // Thread.sleep(1000);
 
-        do{
+        do {
+            Scanner sc = new Scanner(System.in);
+
             // System.out.print("\033[H\033[2J");
             // System.out.flush();
             System.out.println("PALABRA");
-            String s = ShowWithoutWord(Word);
+            System.out.println(lowbar);
             option = Menu(option);
-            switch(option){
+            switch (option) {
                 case 1:
-                    showNewWord(Word);
+                    System.out.print("Introduce la letra: ");
+                    String guess = sc.next();
+                    letter(Word,guess,lowbar);
                     break;
                 case 2:
-                    if(wordInput(Word)){
+                    if (wordInput(Word)) {
                         fullWord = true;
-                    }else{
+                    } else {
                         fullWord = false;
                         System.out.println("La palabra introducida no es correcta.");
                     }
@@ -37,18 +42,19 @@ public class Inicio{
                     System.out.println("Ese numero es incorrecto. \n Vuelve a introducirlo");
 
                     break;
-                }
-        }while(option == 3 || !fullWord);
+            }
+        } while (option == 3 || !fullWord);
 
-        if(option != 4){
+        if (option != 4) {
             System.out.println("HAS GANADO");
-        }else{
+        } else {
             System.out.println("Mas suerte la proxima vez");
         }
 
     }
+
     //initialice the Game Menu
-    public static int Menu(int option){
+    public static int Menu(int option) {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("1 - [ Introducir una letra ]");
@@ -61,7 +67,7 @@ public class Inicio{
     }
 
     //Test if the introduced word is the same
-    public static Boolean wordInput(String Word){
+    public static Boolean wordInput(String Word) {
         Scanner wd = new Scanner(System.in);
 
         System.out.print("Input the word: ");
@@ -71,33 +77,20 @@ public class Inicio{
     }
 
     //Show " _ " letter by letter
-    public static String ShowWithoutWord(String Word){
-        
-        String words = "";
-
-        for(int i = 0;i <= Word.length();i++){
-            words += "_";
-        }
-        return words;
-    }
 
     //Introduce a letter
-    public static char inputNewLetter(){
-        Scanner nw = new Scanner(System.in);
+    public static void letter(String Word, String guess, String lowbar) {
 
-        System.out.print("Introduce una letra: ");
-        return nw.nextLine().charAt(0);
-    }
+        String newlowbar = "";
 
-    public static void showNewWord(String Word){
-        int inc = 0;
-        String word = "";
-            if(inputNewLetter() == Word.charAt(inc)){
-                word = ShowWithoutWord(Word).replace('_', inputNewLetter());
-
+        for (int i = 0; i < Word.length(); i++) {
+            if(Word.charAt(i) == guess.charAt(0)){
+                newlowbar += guess.charAt(0);
+            }else if(lowbar.charAt(i) != '_'){
+                newlowbar += Word.charAt(i);
             }else{
-                inc++;
+                newlowbar += "_";
             }
-        System.out.println(ShowWithoutWord(Word));
+        }
     }
 }
