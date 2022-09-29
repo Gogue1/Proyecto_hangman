@@ -4,26 +4,26 @@ import java.util.Scanner;
 public class Inicio {
     public static void main(String[] args) throws InterruptedException {
         String Word = "jorge";
-        String newWord;
-        String lowbar = new String(new char[Word.length()]).replace("\0", " _ ");
-        int option = 0;
+        String lowbar = new String(new char[Word.length()]).replace("\0", "_");
+        int option = 0, count = 0;
         boolean fullWord = false;
 
         // Thread.sleep(1000);
 
-        do {
+        while (option == 3 || !fullWord){
             Scanner sc = new Scanner(System.in);
 
             // System.out.print("\033[H\033[2J");
             // System.out.flush();
-            System.out.println("PALABRA");
+            System.out.print("PALABRA");
+            System.out.println("     Tienes " + count + " fallos");
             System.out.println(lowbar);
             option = Menu(option);
             switch (option) {
                 case 1:
                     System.out.print("Introduce la letra: ");
-                    String guess = sc.next();
-                    letter(Word,guess,lowbar);
+                    String resolve = sc.nextLine();
+                    letter(Word,lowbar,resolve,count,fullWord);
                     break;
                 case 2:
                     if (wordInput(Word)) {
@@ -43,7 +43,7 @@ public class Inicio {
 
                     break;
             }
-        } while (option == 3 || !fullWord);
+        }
 
         if (option != 4) {
             System.out.println("HAS GANADO");
@@ -79,18 +79,28 @@ public class Inicio {
     //Show " _ " letter by letter
 
     //Introduce a letter
-    public static void letter(String Word, String guess, String lowbar) {
+    public static void letter(String Word, String lowbar,String resolve, int count,boolean fullWord) {
 
         String newlowbar = "";
 
         for (int i = 0; i < Word.length(); i++) {
-            if(Word.charAt(i) == guess.charAt(0)){
-                newlowbar += guess.charAt(0);
+            if(Word.charAt(i) == resolve.charAt(0)){
+                newlowbar += resolve.charAt(0);
             }else if(lowbar.charAt(i) != '_'){
                 newlowbar += Word.charAt(i);
             }else{
                 newlowbar += "_";
             }
+        }
+
+        if (lowbar.equals(newlowbar)) {
+            count++;
+        }else{
+            lowbar = newlowbar;
+        }
+
+        if(newlowbar.equals(Word)){
+            ;
         }
     }
 }
